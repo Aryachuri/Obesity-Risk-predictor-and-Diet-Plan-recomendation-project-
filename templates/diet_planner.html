@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Diet Planner</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(to right, #00b09b, #96c93d);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .card {
+        width: 450px;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      p {
+        text-align: center;
+        margin-bottom: 25px;
+        color: gray;
+      }
+
+      .field {
+        margin-bottom: 18px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+        color: #444;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #00b09b;
+      }
+
+      .bmi-box {
+        background: #f4f4f4;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        background: #00b09b;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #008f7f;
+      }
+
+      #result-area {
+        margin-top: 25px;
+        padding: 15px;
+        background: #f1fff9;
+        border-left: 5px solid #00b09b;
+        border-radius: 8px;
+        display: none;
+      }
+
+      .result-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      .diet-text {
+        color: #008f7f;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>AI Diet Planner</h1>
+
+      <p>Enter your details to get a recommended diet plan</p>
+
+      <!-- AGE -->
+
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="age" placeholder="Enter age" />
+      </div>
+
+      <!-- GENDER -->
+
+      <div class="field">
+        <label>Gender</label>
+
+        <select id="gender">
+          <option value="1">Male</option>
+          <option value="0">Female</option>
+        </select>
+      </div>
+
+      <!-- WEIGHT -->
+
+      <div class="field">
+        <label>Weight (kg)</label>
+        <input type="number" id="weight" placeholder="Enter weight" />
+      </div>
+
+      <!-- HEIGHT -->
+
+      <div class="field">
+        <label>Height (cm)</label>
+        <input type="number" id="height" placeholder="Enter height" />
+      </div>
+
+      <!-- ACTIVITY LEVEL -->
+
+      <div class="field">
+        <label>Activity Level</label>
+
+        <select id="activity">
+          <option value="0">Low</option>
+          <option value="1">Moderate</option>
+          <option value="2">High</option>
+        </select>
+      </div>
+
+      <!-- HEALTH CONDITION -->
+
+      <div class="field">
+        <label>Health Condition</label>
+
+        <select id="health">
+          <option value="2">None</option>
+          <option value="0">Diabetes</option>
+          <option value="1">Hypertension</option>
+          <option value="3">Obesity</option>
+        </select>
+      </div>
+
+      <!-- CALORIE TARGET -->
+
+      <div class="field">
+        <label>Calorie Target</label>
+
+        <input type="number" id="calories" placeholder="Enter calorie target" />
+      </div>
+
+      <!-- BMI -->
+
+      <div class="bmi-box">
+        BMI:
+        <span id="bmi-display">0</span>
+      </div>
+
+      <!-- BUTTON -->
+
+      <button class="btn" onclick="predictDiet()">Generate Diet Plan</button>
+
+      <!-- RESULT -->
+
+      <div id="result-area">
+        <div class="result-title">Recommended Diet Plan</div>
+
+        <div class="diet-text" id="diet-result"></div>
+      </div>
+    </div>
+
+    <script>
+      // =====================================
+      // BMI CALCULATION
+      // =====================================
+
+      function calculateBMI() {
+        let weight = document.getElementById("weight").value;
+
+        let height = document.getElementById("height").value;
+
+        if (weight && height) {
+          let bmi = weight / (height / 100) ** 2;
+
+          document.getElementById("bmi-display").innerText = bmi.toFixed(2);
+        }
+      }
+
+      document.getElementById("weight").addEventListener("input", calculateBMI);
+
+      document.getElementById("height").addEventListener("input", calculateBMI);
+
+      // =====================================
+      // PREDICT FUNCTION
+      // =====================================
+
+      async function predictDiet() {
+        let age = document.getElementById("age").value;
+
+        let gender = document.getElementById("gender").value;
+
+        let weight = document.getElementById("weight").value;
+
+        let height = document.getElementById("height").value;
+
+        let activity = document.getElementById("activity").value;
+
+        let health = document.getElementById("health").value;
+
+        let calories = document.getElementById("calories").value;
+
+        let bmi = weight / (height / 100) ** 2;
+
+        // ================================
+        // SEND DATA TO FLASK
+        // ================================
+
+        let response = await fetch("/diet_plan", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            age: age,
+            gender: gender,
+            weight: weight,
+            height: height,
+            bmi: bmi,
+            activity_level: activity,
+            health_condition: health,
+            calorie_target: calories,
+          }),
+        });
+
+        let result = await response.json();
+
+        // ================================
+        // DISPLAY RESULT
+        // ================================
+
+        document.getElementById("result-area").style.display = "block";
+
+        document.getElementById("diet-result").innerText = result.diet;
+      }
+    </script>
+  </body>
+</html>
