@@ -1,288 +1,209 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Diet Planner</title>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Diet Planner — FitPlan AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+   <link href="/static/css/diet_palnner.css" rel="stylesheet">
+</head>
+<body>
 
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-      }
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="/">
+    <div class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    </div>
+    <span class="nav-wordmark">Fit<em>Plan</em> AI</span>
+  </a>
+  <a class="nav-back" href="/">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Back to Home
+  </a>
+</nav>
 
-      body {
-        background: linear-gradient(to right, #00b09b, #96c93d);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+        <line x1="6" y1="1" x2="6" y2="4"/>
+        <line x1="10" y1="1" x2="10" y2="4"/>
+        <line x1="14" y1="1" x2="14" y2="4"/>
+      </svg>
+      02 / 03 · AI Diet Planner
+    </div>
+    <h1>Your <em>personalised</em><br>diet recommendation</h1>
+    <p class="hero-sub">Enter your health details and our ML model will assign the optimal diet from 6 categories.</p>
+  </div>
+</div>
 
-      .card {
-        width: 450px;
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-      }
+<!-- MAIN -->
+<div class="main">
 
-      h1 {
-        text-align: center;
-        margin-bottom: 10px;
-        color: #333;
-      }
+  <div class="section-label">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+    </svg>
+    Your details
+  </div>
 
-      p {
-        text-align: center;
-        margin-bottom: 25px;
-        color: gray;
-      }
-
-      .field {
-        margin-bottom: 18px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: bold;
-        color: #444;
-      }
-
-      input,
-      select {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 15px;
-      }
-
-      input:focus,
-      select:focus {
-        outline: none;
-        border-color: #00b09b;
-      }
-
-      .bmi-box {
-        background: #f4f4f4;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-      }
-
-      .btn {
-        width: 100%;
-        padding: 14px;
-        background: #00b09b;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      .btn:hover {
-        background: #008f7f;
-      }
-
-      #result-area {
-        margin-top: 25px;
-        padding: 15px;
-        background: #f1fff9;
-        border-left: 5px solid #00b09b;
-        border-radius: 8px;
-        display: none;
-      }
-
-      .result-title {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 8px;
-      }
-
-      .diet-text {
-        color: #008f7f;
-        font-size: 20px;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="card">
-      <h1>AI Diet Planner</h1>
-
-      <p>Enter your details to get a recommended diet plan</p>
-
-      <!-- AGE -->
-
-      <div class="field">
-        <label>Age</label>
-        <input type="number" id="age" placeholder="Enter age" />
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+        </svg>
       </div>
-
-      <!-- GENDER -->
-
-      <div class="field">
-        <label>Gender</label>
-
-        <select id="gender">
-          <option value="1">Male</option>
-          <option value="0">Female</option>
-        </select>
-      </div>
-
-      <!-- WEIGHT -->
-
-      <div class="field">
-        <label>Weight (kg)</label>
-        <input type="number" id="weight" placeholder="Enter weight" />
-      </div>
-
-      <!-- HEIGHT -->
-
-      <div class="field">
-        <label>Height (cm)</label>
-        <input type="number" id="height" placeholder="Enter height" />
-      </div>
-
-      <!-- ACTIVITY LEVEL -->
-
-      <div class="field">
-        <label>Activity Level</label>
-
-        <select id="activity">
-          <option value="0">Low</option>
-          <option value="1">Moderate</option>
-          <option value="2">High</option>
-        </select>
-      </div>
-
-      <!-- HEALTH CONDITION -->
-
-      <div class="field">
-        <label>Health Condition</label>
-
-        <select id="health">
-          <option value="2">None</option>
-          <option value="0">Diabetes</option>
-          <option value="1">Hypertension</option>
-          <option value="3">Obesity</option>
-        </select>
-      </div>
-
-      <!-- CALORIE TARGET -->
-
-      <div class="field">
-        <label>Calorie Target</label>
-
-        <input type="number" id="calories" placeholder="Enter calorie target" />
-      </div>
-
-      <!-- BMI -->
-
-      <div class="bmi-box">
-        BMI:
-        <span id="bmi-display">0</span>
-      </div>
-
-      <!-- BUTTON -->
-
-      <button class="btn" onclick="predictDiet()">Generate Diet Plan</button>
-
-      <!-- RESULT -->
-
-      <div id="result-area">
-        <div class="result-title">Recommended Diet Plan</div>
-
-        <div class="diet-text" id="diet-result"></div>
+      <div class="card-header-text">
+        <h3>Personal Information</h3>
+        <p>Biometric data for diet prediction</p>
       </div>
     </div>
+    <div class="card-body">
+      <div class="form-grid">
 
-    <script>
-      // =====================================
-      // BMI CALCULATION
-      // =====================================
+        <div class="field">
+          <label>Age</label>
+          <input type="number" id="age" placeholder="e.g. 28" min="10" max="100"/>
+        </div>
 
-      function calculateBMI() {
-        let weight = document.getElementById("weight").value;
+        <div class="field">
+          <label>Gender</label>
+          <select id="gender">
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+          </select>
+        </div>
 
-        let height = document.getElementById("height").value;
+        <div class="field">
+          <label>Weight (kg)</label>
+          <input type="number" id="weight" placeholder="e.g. 75" min="20" max="200" step="0.1"/>
+        </div>
 
-        if (weight && height) {
-          let bmi = weight / (height / 100) ** 2;
+        <div class="field">
+          <label>Height (cm)</label>
+          <input type="number" id="height" placeholder="e.g. 175" min="100" max="250"/>
+        </div>
 
-          document.getElementById("bmi-display").innerText = bmi.toFixed(2);
-        }
-      }
+        <div class="field">
+          <label>Activity Level</label>
+          <select id="activity">
+            <option value="0">Low</option>
+            <option value="1">Moderate</option>
+            <option value="2">High</option>
+          </select>
+        </div>
 
-      document.getElementById("weight").addEventListener("input", calculateBMI);
+        <div class="field">
+          <label>Health Condition</label>
+          <select id="health">
+            <option value="2">None</option>
+            <option value="0">Diabetes</option>
+            <option value="1">Hypertension</option>
+            <option value="3">Obesity</option>
+          </select>
+        </div>
 
-      document.getElementById("height").addEventListener("input", calculateBMI);
+        <div class="field field-full">
+          <label>Calorie Target</label>
+          <input type="number" id="calories" placeholder="e.g. 2000"/>
+        </div>
 
-      // =====================================
-      // PREDICT FUNCTION
-      // =====================================
+      </div>
 
-      async function predictDiet() {
-        let age = document.getElementById("age").value;
+      <!-- BMI auto-display -->
+      <div class="bmi-box">
+        <span class="bmi-box-label">BMI (auto-calculated)</span>
+        <div style="display:flex;align-items:center;">
+          <span class="bmi-value" id="bmi-display">—</span>
+          <span class="bmi-badge" id="bmi-badge" style="display:none;"></span>
+        </div>
+      </div>
 
-        let gender = document.getElementById("gender").value;
+      <!-- Error -->
+      <div class="error-box" id="error-box">Please fill in all fields before generating.</div>
 
-        let weight = document.getElementById("weight").value;
+      <!-- Button -->
+      <button class="btn" id="submit-btn" onclick="predictDiet()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        Generate Diet Plan
+      </button>
+    </div>
+  </div>
 
-        let height = document.getElementById("height").value;
+  <!-- RESULT -->
+  <div class="result-card" id="result-area">
+    <div class="result-header" id="result-header-el">
+      <div class="result-header-left">
+        <div class="result-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Diet Recommendation</h3>
+          <p>Based on your ML model prediction</p>
+        </div>
+      </div>
+    </div>
+    <div class="result-body">
+      <div class="result-label">Recommended Diet Plan</div>
+      <div class="diet-name" id="diet-result">—</div>
+      <div class="bmi-result-row">
+        <div class="info-chip" id="bmi-chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="20" x2="12" y2="10"/>
+            <line x1="18" y1="20" x2="18" y2="4"/>
+            <line x1="6"  y1="20" x2="6"  y2="16"/>
+          </svg>
+          BMI —
+        </div>
+        <div class="info-chip" id="category-chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+          </svg>
+          —
+        </div>
+      </div>
 
-        let activity = document.getElementById("activity").value;
+      <!-- Timetable CTA -->
+      <div class="timetable-cta" id="timetable-cta" onclick="goToTimetable()">
+        <div class="cta-left">
+          <div class="cta-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8"  y1="2" x2="8"  y2="6"/>
+              <line x1="3"  y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="cta-text">
+            <strong>Generate Exercise Timetable</strong>
+            <span>Use these results to create your 7-day plan with Mistral 7B</span>
+          </div>
+        </div>
+        <div class="cta-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        let health = document.getElementById("health").value;
+</div><!-- /main -->
 
-        let calories = document.getElementById("calories").value;
-
-        let bmi = weight / (height / 100) ** 2;
-
-        // ================================
-        // SEND DATA TO FLASK
-        // ================================
-
-        let response = await fetch("/diet_plan", {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            age: age,
-            gender: gender,
-            weight: weight,
-            height: height,
-            bmi: bmi,
-            activity_level: activity,
-            health_condition: health,
-            calorie_target: calories,
-          }),
-        });
-
-        let result = await response.json();
-
-        // ================================
-        // DISPLAY RESULT
-        // ================================
-
-        document.getElementById("result-area").style.display = "block";
-
-        document.getElementById("diet-result").innerText = result.diet;
-      }
-    </script>
-  </body>
+<script src="/static/js/diet_planner.js"></script>
+</body>
 </html>

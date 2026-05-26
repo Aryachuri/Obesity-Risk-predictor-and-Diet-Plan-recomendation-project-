@@ -8,9 +8,15 @@ diet_model=joblib.load('diet_model.pkl')
 
 label_encoder = joblib.load("meal_encoder.pkl")
 
-@app.route('/')
+
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("home.html")
+
+
+@app.route('/obesity')
+def obesity():
+    return render_template('obesity.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -107,14 +113,14 @@ def diet_plan():
     })
 
 
-@app.route("/timetable")
+@app.route("/exercise_timetable")
 def timetable():
     return render_template('exercise_timetable.html')
 
 @app.route('/exercise_timetable', methods=['POST'])
 def exercise_timetable():
     data = request.json
-    return render_template('timetable.html',
+    return render_template('exercise_timetable.html',
         obesity_level = data['obesity_level'],
         diet_plan     = data['diet_plan'],
         bmi           = data['bmi']

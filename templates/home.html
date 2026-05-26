@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitPlan AI — Health Intelligence Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="/static/css/home.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+    </div>
+    <span class="nav-wordmark">Fit<em>Plan</em> AI</span>
+  </div>
+  <span class="nav-pill">ML-Powered Health Suite</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Health Intelligence</div>
+    <h1 class="hero-h1">Know your body.<br><em>Plan your future.</em></h1>
+    <p class="hero-desc">
+      A machine-learning powered suite that predicts your obesity risk,
+      recommends a personalised diet, and generates a full 7-day
+      AI exercise timetable — all from your biometric data.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <strong>3</strong>
+        <span>AI Tools</span>
+      </div>
+      <div class="hero-meta-item">
+        <strong>7</strong>
+        <span>Day plans</span>
+      </div>
+      <div class="hero-meta-item">
+        <strong>6</strong>
+        <span>Diet categories</span>
+      </div>
+      <div class="hero-meta-item">
+        <strong>4</strong>
+        <span>BMI classes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual">
+      <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <!-- Rings -->
+        <circle cx="180" cy="180" r="174" fill="none" stroke="#E0DAD0" stroke-width="1"/>
+        <circle cx="180" cy="180" r="130" fill="none" stroke="#E0DAD0" stroke-width="1" stroke-dasharray="6 8"/>
+        <circle cx="180" cy="180" r="86"  fill="none" stroke="#E0DAD0" stroke-width="1"/>
+        <!-- Center -->
+        <circle cx="180" cy="180" r="46" fill="#1A1714"/>
+        <text x="180" y="175" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(255,255,255,0.6)" font-weight="500" letter-spacing="1">YOUR</text>
+        <text x="180" y="191" text-anchor="middle" font-family="DM Sans" font-size="11" fill="rgba(255,255,255,0.6)" font-weight="500" letter-spacing="1">HEALTH</text>
+        <!-- Dots -->
+        <circle cx="180" cy="10"  r="6" fill="#3E6B22" stroke="#F4F1EC" stroke-width="2"/>
+        <circle cx="326" cy="252" r="6" fill="#1A3A6B" stroke="#F4F1EC" stroke-width="2"/>
+        <circle cx="72"  cy="312" r="6" fill="#7A4A08" stroke="#F4F1EC" stroke-width="2"/>
+        <!-- Labels -->
+        <text x="194" y="14"  font-family="DM Sans" font-size="10" fill="#8A8480" font-weight="500" letter-spacing="1">OBESITY</text>
+        <text x="334" y="248" font-family="DM Sans" font-size="10" fill="#8A8480" font-weight="500" letter-spacing="1">DIET</text>
+        <text x="30"  y="330" font-family="DM Sans" font-size="10" fill="#8A8480" font-weight="500" letter-spacing="1">TIMETABLE</text>
+        <!-- Lines from dots to center -->
+        <line x1="180" y1="16"  x2="180" y2="134" stroke="#E0DAD0" stroke-width="1" stroke-dasharray="3 5"/>
+        <line x1="320" y1="252" x2="226" y2="214" stroke="#E0DAD0" stroke-width="1" stroke-dasharray="3 5"/>
+        <line x1="78"  y1="306" x2="148" y2="218" stroke="#E0DAD0" stroke-width="1" stroke-dasharray="3 5"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-text">Select a tool to begin</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- NAVIGATION CARDS -->
+<div class="cards-grid">
+
+  <!-- Card 1: Obesity Predictor -->
+  <a class="nav-card green" href="/obesity">
+    <div class="card-top">
+      <div class="card-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+        </svg>
+      </div>
+      <div class="card-number">01 / 03</div>
+      <div class="card-title">Obesity Risk<br>Predictor</div>
+      <p class="card-desc">
+        Enter your age, weight, height and gender. Our Random Forest model
+        instantly classifies your BMI risk level with confidence probabilities.
+      </p>
+      <div class="card-tags">
+        <span class="tag">Random Forest</span>
+        <span class="tag">BMI Analysis</span>
+        <span class="tag">Risk Scoring</span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-cta">Predict my risk →</span>
+      <div class="card-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </div>
+  </a>
+
+  <!-- Card 2: Diet Planner -->
+  <a class="nav-card blue" href="/diet">
+    <div class="card-top">
+      <div class="card-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+          <line x1="6" y1="1" x2="6" y2="4"/>
+          <line x1="10" y1="1" x2="10" y2="4"/>
+          <line x1="14" y1="1" x2="14" y2="4"/>
+        </svg>
+      </div>
+      <div class="card-number">02 / 03</div>
+      <div class="card-title">AI Diet<br>Planner</div>
+      <p class="card-desc">
+        Provide your health condition, activity level and calorie target.
+        Our ML model selects the optimal diet from 6 personalised categories.
+      </p>
+      <div class="card-tags">
+        <span class="tag">6 Diet Types</span>
+        <span class="tag">Health Conditions</span>
+        <span class="tag">Calorie-aware</span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-cta">Plan my diet →</span>
+      <div class="card-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </div>
+  </a>
+
+  <!-- Card 3: Exercise Timetable -->
+  <a class="nav-card amber" href="/exercise_timetable">
+    <div class="card-top">
+      <div class="card-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <div class="card-number">03 / 03</div>
+      <div class="card-title">Exercise<br>Timetable</div>
+      <p class="card-desc">
+        Powered by Ollama Mistral 7B. Generates a full 7-day personalised
+        workout plan with warm-ups, exercises, cool-downs and daily diet tips.
+      </p>
+      <div class="card-tags">
+        <span class="tag">Mistral 7B</span>
+        <span class="tag">7-Day Plan</span>
+        <span class="tag">Live Streaming</span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-cta">Generate timetable →</span>
+      <div class="card-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div class="how-inner">
+    <div class="how-label">Workflow</div>
+    <div class="how-title">How it works</div>
+    <div class="how-steps">
+
+      <div class="how-step">
+        <div class="step-num">STEP 01</div>
+        <div class="step-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+          </svg>
+        </div>
+        <div class="step-title">Enter your biometrics</div>
+        <p class="step-desc">
+          Input age, weight, height, gender, health condition, activity level
+          and calorie target into the predictor or diet planner.
+        </p>
+      </div>
+
+      <div class="how-step">
+        <div class="step-num">STEP 02</div>
+        <div class="step-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="step-title">ML model predicts</div>
+        <p class="step-desc">
+          Your trained Random Forest models classify obesity level and assign
+          the optimal diet plan from 6 categories — running entirely locally.
+        </p>
+      </div>
+
+      <div class="how-step">
+        <div class="step-num">STEP 03</div>
+        <div class="step-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="step-title">Mistral generates your plan</div>
+        <p class="step-desc">
+          The predictions are passed to Ollama Mistral 7B which streams a full
+          7-day exercise timetable with diet tips directly to the webpage.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Fit<em>Plan</em> AI</div>
+  <div class="footer-note">
+    <span class="footer-dot"></span>
+    Flask · scikit-learn · Ollama Mistral 7B · Running locally
+  </div>
+</footer>
+
+</body>
+</html>
