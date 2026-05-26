@@ -107,6 +107,20 @@ def diet_plan():
     })
 
 
+@app.route("/timetable")
+def timetable():
+    return render_template('exercise_timetable.html')
+
+@app.route('/exercise_timetable', methods=['POST'])
+def exercise_timetable():
+    data = request.json
+    return render_template('timetable.html',
+        obesity_level = data['obesity_level'],
+        diet_plan     = data['diet_plan'],
+        bmi           = data['bmi']
+    )
+
+
 
 
 

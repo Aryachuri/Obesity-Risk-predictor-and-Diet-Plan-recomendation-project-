@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPlan AI — Exercise Timetable Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #f5f3ef;
+    --bg2:       #edeae4;
+    --white:     #ffffff;
+    --surface:   #ffffff;
+    --surface2:  #f9f8f5;
+    --border:    #e2ddd6;
+    --border2:   #cdc7bd;
+    --text:      #1a1814;
+    --text2:     #4a4540;
+    --muted:     #8c8580;
+    --green:     #3a7d5e;
+    --green-lt:  #edf5f0;
+    --green-md:  #c3dfd2;
+    --blue:      #2c5f8a;
+    --blue-lt:   #eaf1f8;
+    --amber:     #b07d2e;
+    --amber-lt:  #fdf4e3;
+    --red:       #c0392b;
+    --red-lt:    #fdf0ee;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.09), 0 4px 12px rgba(0,0,0,0.05);
+    --radius:    14px;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 32px; height: 32px;
+    background: var(--green);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-icon svg { color: white; }
+  .nav-badge {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--green);
+    background: var(--green-lt);
+    border: 1px solid var(--green-md);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #f0f7f3 0%, #e8f4ee 40%, #f5f3ef 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 32px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,125,94,0.08) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(44,95,138,0.06) 0%, transparent 70%);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--white);
+    border: 1px solid var(--green-md);
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 54px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--green);
+  }
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text2);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .hero-stat strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--green);
+  }
+  .hero-stat span {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .card-header {
+    padding: 20px 24px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-icon.green  { background: var(--green-lt);  color: var(--green); }
+  .card-icon.blue   { background: var(--blue-lt);   color: var(--blue);  }
+  .card-icon.amber  { background: var(--amber-lt);  color: var(--amber); }
+  .card-header-text h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1px;
+  }
+  .card-header-text p {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .card-body { padding: 24px; }
+
+  /* ── FORM ELEMENTS ── */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 580px) {
+    .form-row, .form-row.cols-3 { grid-template-columns: 1fr; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  label .ml-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    color: var(--green);
+    background: var(--green-lt);
+    padding: 1px 7px;
+    border-radius: 100px;
+    border: 1px solid var(--green-md);
+  }
+
+  select, input[type="number"] {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%238c8580' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  select:focus, input[type="number"]:focus {
+    border-color: var(--green);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(58,125,94,0.1);
+  }
+  select option { background: white; color: var(--text); }
+
+  /* BMI row */
+  .bmi-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .bmi-row input { max-width: 140px; }
+  .bmi-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    min-width: 130px;
+    transition: all 0.2s;
+  }
+  .bmi-pill.underweight { background: var(--blue-lt);  border-color: #b3cfe8; color: var(--blue);  }
+  .bmi-pill.normal      { background: var(--green-lt); border-color: var(--green-md); color: var(--green); }
+  .bmi-pill.overweight  { background: var(--amber-lt); border-color: #e8d19c; color: var(--amber); }
+  .bmi-pill.obese       { background: var(--red-lt);   border-color: #e8bcb8; color: var(--red);   }
+
+  /* ── COLLAPSIBLE ── */
+  .collapse-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    text-align: left;
+  }
+  .collapse-toggle:hover { background: var(--surface2); color: var(--text2); }
+  .collapse-toggle svg { transition: transform 0.2s; }
+  .collapse-toggle.open svg { transform: rotate(180deg); }
+  .collapse-body {
+    display: none;
+    padding: 20px 24px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .collapse-body.open { display: block; }
+
+  /* ── GENERATE BUTTON ── */
+  .btn-generate {
+    width: 100%;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 11px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(58,125,94,0.25);
+    letter-spacing: 0.3px;
+    margin-top: 20px;
+  }
+  .btn-generate:hover:not(:disabled) {
+    background: #2e6b4f;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(58,125,94,0.32);
+  }
+  .btn-generate:active:not(:disabled) { transform: translateY(0); }
+  .btn-generate:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  /* ── STATUS / ERROR ── */
+  .status-bar {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    background: var(--blue-lt);
+    border: 1px solid #b3cfe8;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--blue);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .status-bar.visible { display: flex; }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid #b3cfe8;
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-box {
+    display: none;
+    background: var(--red-lt);
+    border: 1px solid #e8bcb8;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--red);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+  .error-box.visible { display: block; }
+  .error-box code {
+    background: rgba(192,57,43,0.08);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+  }
+
+  /* ── OUTPUT ── */
+  .output-section { display: none; }
+  .output-section.visible { display: block; }
+
+  .output-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .output-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--green-lt), #f8fcfa);
+  }
+  .output-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .output-card-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .output-card-title span {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .btn-copy {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-copy:hover { border-color: var(--green); color: var(--green); }
+  .btn-copy.copied { border-color: var(--green); color: var(--green); background: var(--green-lt); }
+
+  .output-body {
+    padding: 28px 32px;
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: var(--text2);
+  }
+
+  /* Rendered timetable styles */
+  .output-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 28px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--green-lt);
+  }
+  .output-body h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 16px 0 6px;
+  }
+  .output-body strong { color: var(--text); font-weight: 700; }
+  .output-body em { color: var(--muted); font-style: italic; }
+  .output-body .day-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(90deg, var(--green-lt), transparent);
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 20px 0 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .output-body table {
+    width: 100%; border-collapse: collapse;
+    margin: 14px 0; font-size: 13.5px;
+  }
+  .output-body th {
+    background: var(--surface2);
+    color: var(--text2);
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 9px 14px; text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  .output-body td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .output-body tr:last-child td { border-bottom: none; }
+  .output-body tr:hover td { background: var(--surface2); }
+
+  /* streaming cursor */
+  .cursor {
+    display: inline-block; width: 2px; height: 16px;
+    background: var(--green); margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── FOOTER NOTE ── */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .footer-note code {
+    background: var(--surface2);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; font-family: monospace;
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .footer-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--surface2); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); margin-top: 2px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card   { animation: fadeUp 0.4s ease both; }
+  .card:nth-child(2) { animation-delay: 0.06s; }
+  .card:nth-child(3) { animation-delay: 0.12s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    FitPlan AI
+  </a>
+  <span class="nav-badge">Ollama · Mistral 7B</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      AI-Powered · Personalised · ML-Driven
+    </div>
+    <h1>Your <em>personalised</em><br>exercise timetable</h1>
+    <p class="hero-sub">Enter your health profile and let Mistral 7B generate a full 7-day workout &amp; nutrition plan tailored to your body and goals.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>7</strong><span>Days planned</span></div>
+      <div class="hero-stat"><strong>6</strong><span>Diet categories</span></div>
+      <div class="hero-stat"><strong>4</strong><span>Obesity classes</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STEP 1: BMI & Obesity -->
+  <div class="section-title">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    Step 1 — Body Profile
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon green">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+      </div>
+      <div class="card-header-text">
+        <h3>BMI &amp; Obesity Level</h3>
+        <p>Your ML model uses these 4 labels: Underweight · Normal · Overweight · Obese</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- BMI Input -->
+      <div class="field" style="margin-bottom:16px;">
+        <label>
+          Enter Your BMI
+          <span style="font-size:10px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">— auto-fills obesity level</span>
+        </label>
+        <div class="bmi-row">
+          <input type="number" id="bmiInput" placeholder="e.g. 27.4" min="10" max="70" step="0.1"
+            oninput="autoFillObesity(this.value); autoDetectDiet()">
+          <div class="bmi-pill" id="bmiPill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Enter BMI above
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Obesity Level <span class="ml-tag">ML output</span></label>
+          <select id="obesityLevel">
+            <option value="">— Select —</option>
+            <option value="Underweight">Underweight  (BMI &lt; 18.5)</option>
+            <option value="Normal">Normal  (BMI 18.5 – 24.9)</option>
+            <option value="Overweight">Overweight  (BMI 25 – 29.9)</option>
+            <option value="Obese">Obese  (BMI ≥ 30)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Activity Level</label>
+          <select id="activityLevel" onchange="autoDetectDiet()">
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Health & Diet -->
+  <div class="section-title">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Step 2 — Health &amp; Diet
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon blue">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div class="card-header-text">
+        <h3>Health Condition &amp; Diet Plan</h3>
+        <p>Auto-detected from your Python model logic · 6 diet categories</p>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="field" style="margin-bottom:16px;">
+        <label>Health Condition</label>
+        <select id="healthCondition" onchange="autoDetectDiet()" style="max-width:300px;">
+          <option value="None">None</option>
+          <option value="Diabetes">Diabetes</option>
+          <option value="Hypertension">Hypertension</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Diet Plan <span class="ml-tag">ML output</span></label>
+        <select id="dietPlan">
+          <option value="">— Select —</option>
+          <option value="Diabetic Diet">Diabetic Diet</option>
+          <option value="Weight Loss Diet">Weight Loss Diet</option>
+          <option value="Muscle Gain Diet">Muscle Gain Diet</option>
+          <option value="High-Protein Diet">High-Protein Diet</option>
+          <option value="Low-Carb Diet">Low-Carb Diet</option>
+          <option value="Balanced Diet">Balanced Diet</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- OPTIONAL DETAILS -->
+    <button class="collapse-toggle" id="collapseToggle" onclick="toggleCollapse()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      Additional details (optional)
+    </button>
+    <div class="collapse-body" id="collapseBody">
+      <div class="form-row cols-3">
+        <div class="field">
+          <label>Age Range</label>
+          <select id="ageRange">
+            <option value="18–25">18–25</option>
+            <option value="26–35" selected>26–35</option>
+            <option value="36–45">36–45</option>
+            <option value="46–55">46–55</option>
+            <option value="56+">56+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Gender</label>
+          <select id="gender">
+            <option value="not specified">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Available Time / Day</label>
+          <select id="availableTime">
+            <option value="30 minutes">30 min</option>
+            <option value="45 minutes">45 min</option>
+            <option value="1 hour" selected>1 hour</option>
+            <option value="1.5 hours">1.5 hours</option>
+            <option value="2 hours">2 hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:4px;">
+        <label>Fitness Goal</label>
+        <select id="fitnessGoal">
+          <option value="lose weight">Lose Weight</option>
+          <option value="build muscle">Build Muscle</option>
+          <option value="improve stamina">Improve Stamina</option>
+          <option value="stay active and healthy">Stay Active &amp; Healthy</option>
+          <option value="reduce stress">Reduce Stress</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <button class="btn-generate" id="generateBtn" onclick="generateTimetable()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    Generate My 7-Day Timetable
+  </button>
+
+  <!-- STATUS -->
+  <div class="status-bar" id="statusBar" style="margin-top:20px;">
+    <div class="spinner"></div>
+    <span id="statusText">Connecting to Ollama · mistral:7b …</span>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-box" id="errorBox" style="margin-top:20px;"></div>
+
+  <!-- OUTPUT -->
+  <div class="output-section" id="outputSection" style="margin-top:32px;">
+    <div class="section-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Your Personalised Plan
+    </div>
+    <div class="output-card">
+      <div class="output-card-header">
+        <div class="output-card-title">
+          <h2>Weekly Timetable</h2>
+          <span id="planMeta"></span>
+        </div>
+        <button class="btn-copy" id="copyBtn" onclick="copyOutput()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <div class="output-body" id="timetableOutput"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div class="footer-note" style="margin-top:28px;">
+    <div class="footer-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <div>
+      Calls your local Ollama at <code>http://localhost:11434</code> using <code>mistral:7b</code> with streaming.
+      Run Ollama with CORS enabled: <code>OLLAMA_ORIGINS="*" ollama serve</code>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+  /* ── bmi_to_label mirrors Python ── */
+  function autoFillObesity(val) {
+    const bmi = parseFloat(val);
+    const sel  = document.getElementById('obesityLevel');
+    const pill = document.getElementById('bmiPill');
+    if (isNaN(bmi) || val === '') {
+      pill.className = 'bmi-pill';
+      pill.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Enter BMI above`;
+      return;
+    }
+    let label, cls;
+    if      (bmi < 18.5) { label = 'Underweight'; cls = 'underweight'; }
+    else if (bmi < 25)   { label = 'Normal';       cls = 'normal';      }
+    else if (bmi < 30)   { label = 'Overweight';   cls = 'overweight';  }
+    else                 { label = 'Obese';         cls = 'obese';       }
+    sel.value     = label;
+    pill.className = `bmi-pill ${cls}`;
+    pill.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ${label}`;
+  }
+
+  /* ── diet_plan mirrors Python if/elif ── */
+  function autoDetectDiet() {
+    const bmi       = parseFloat(document.getElementById('bmiInput').value);
+    const condition = document.getElementById('healthCondition').value;
+    const activity  = document.getElementById('activityLevel').value;
+    const dietSel   = document.getElementById('dietPlan');
+    const result    = document.getElementById('dietDetectResult');
+
+    if (isNaN(bmi)) {
+      result.className = 'detect-result';
+      result.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Enter BMI to auto-detect`;
+      return;
+    }
+
+    let diet, reason, color;
+    if (condition === 'Diabetes') {
+      diet = 'Diabetic Diet';     reason = 'Health condition: Diabetes';    color = 'var(--red)';
+    } else if (bmi >= 30) {
+      diet = 'Weight Loss Diet';  reason = `BMI ${bmi.toFixed(1)} ≥ 30`;    color = 'var(--amber)';
+    } else if (activity === 'High' && bmi < 25) {
+      diet = 'Muscle Gain Diet';  reason = `Activity High + BMI < 25`;      color = 'var(--green)';
+    } else if (bmi < 18.5) {
+      diet = 'High-Protein Diet'; reason = `BMI ${bmi.toFixed(1)} < 18.5`;  color = 'var(--blue)';
+    } else if (condition === 'Hypertension') {
+      diet = 'Low-Carb Diet';     reason = 'Health condition: Hypertension'; color = 'var(--amber)';
+    } else {
+      diet = 'Balanced Diet';     reason = 'No special conditions';          color = 'var(--green)';
+    }
+
+    dietSel.value = diet;
+    result.className = 'detect-result active';
+    result.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <strong style="color:${color};">${diet}</strong>
+      <span style="color:var(--muted);font-size:12px;margin-left:4px;">· ${reason}</span>`;
+  }
+
+  /* ── collapse ── */
+  function toggleCollapse() {
+    const body   = document.getElementById('collapseBody');
+    const toggle = document.getElementById('collapseToggle');
+    const open   = body.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.childNodes[2].textContent = open ? ' Hide additional details' : ' Additional details (optional)';
+  }
+
+  /* ── prompt builder ── */
+  function buildPrompt() {
+    const obesity   = document.getElementById('obesityLevel').value;
+    const diet      = document.getElementById('dietPlan').value;
+    const condition = document.getElementById('healthCondition').value;
+    const activity  = document.getElementById('activityLevel').value;
+    const age       = document.getElementById('ageRange').value;
+    const gender    = document.getElementById('gender').value;
+    const goal      = document.getElementById('fitnessGoal').value;
+    const time      = document.getElementById('availableTime').value;
+
+    return `You are a certified fitness and nutrition coach. Create a detailed 7-day exercise timetable for a person with the following profile:
+
+- Obesity Level: ${obesity}
+- Diet Plan: ${diet}
+- Health Condition: ${condition}
+- Activity Level: ${activity}
+- Age Range: ${age}
+- Gender: ${gender}
+- Fitness Goal: ${goal}
+- Available Time Per Day: ${time}
+
+Structure the response as a full weekly timetable (Monday to Sunday). For each day include:
+1. Day name and focus area (e.g. "Monday – Cardio & Core")
+2. Warm-up (5–10 min)
+3. Main workout exercises with sets/reps or duration
+4. Cool-down (5 min)
+5. Diet tip of the day aligned with their ${diet}${condition !== 'None' ? `, taking into account their ${condition}` : ''}
+
+Keep it practical, safe, and appropriate for the ${obesity} category. Use clear formatting with headers for each day.`;
+  }
+
+  /* ── generate ── */
+  async function generateTimetable() {
+    const obesity = document.getElementById('obesityLevel').value;
+    const diet    = document.getElementById('dietPlan').value;
+
+    if (!obesity || !diet) {
+      showError('<strong>Missing fields.</strong> Please select an Obesity Level and a Diet Plan before generating.');
+      return;
+    }
+
+    const btn        = document.getElementById('generateBtn');
+    const statusBar  = document.getElementById('statusBar');
+    const errorBox   = document.getElementById('errorBox');
+    const outputSec  = document.getElementById('outputSection');
+    const outputDiv  = document.getElementById('timetableOutput');
+    const statusText = document.getElementById('statusText');
+    const planMeta   = document.getElementById('planMeta');
+
+    btn.disabled = true;
+    errorBox.className = 'error-box';
+    outputSec.className = 'output-section';
+    outputDiv.innerHTML = '';
+    statusBar.className = 'status-bar visible';
+    statusText.textContent = 'Connecting to Ollama · mistral:7b …';
+
+    try {
+      const res = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'mistral:7b', prompt: buildPrompt(), stream: true })
+      });
+
+      if (!res.ok) throw new Error(`Ollama returned HTTP ${res.status}`);
+
+      statusText.textContent = 'Generating your personalised timetable …';
+      outputSec.className = 'output-section visible';
+      planMeta.textContent = `${obesity} · ${diet}`;
+
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      outputDiv.appendChild(cursor);
+
+      let fullText = '';
+      const reader  = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const lines = decoder.decode(value, { stream: true }).split('\n').filter(l => l.trim());
+        for (const line of lines) {
+          try {
+            const json = JSON.parse(line);
+            if (json.response) {
+              fullText += json.response;
+              cursor.remove();
+              outputDiv.innerHTML = renderMarkdown(fullText);
+              outputDiv.appendChild(cursor);
+            }
+            if (json.done) { cursor.remove(); statusBar.className = 'status-bar'; btn.disabled = false; }
+          } catch (_) {}
+        }
+      }
+      cursor.remove();
+      btn.disabled = false;
+      statusBar.className = 'status-bar';
+
+    } catch (err) {
+      statusBar.className = 'status-bar';
+      btn.disabled = false;
+      let msg = err.message;
+      if (err.name === 'TypeError' && err.message.includes('fetch'))
+        msg = `<strong>Cannot reach Ollama.</strong><br>Make sure it's running: <code>ollama serve</code><br>Enable CORS: <code>OLLAMA_ORIGINS="*" ollama serve</code>`;
+      else
+        msg = `<strong>Error:</strong> ${msg}`;
+      showError(msg);
+    }
+  }
+
+  function showError(html) {
+    const box = document.getElementById('errorBox');
+    box.innerHTML = html;
+    box.className = 'error-box visible';
+  }
+
+  function renderMarkdown(text) {
+    return text
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/<strong>(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Day \d+)<\/strong>/gi,
+        '<div class="day-block"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><strong>$1</strong></div>')
+      .replace(/\n/g, '<br>');
+  }
+
+  async function copyOutput() {
+    const text = document.getElementById('timetableOutput').innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyBtn');
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      btn.className = 'btn-copy copied';
+      setTimeout(() => {
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
+        btn.className = 'btn-copy';
+      }, 2000);
+    } catch (_) { alert('Copy failed – select and copy manually.'); }
+  }
+</script>
+</body>
+</html>
