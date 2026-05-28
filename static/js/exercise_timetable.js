@@ -74,11 +74,28 @@
     const gender    = document.getElementById('gender').value;
     const goal      = document.getElementById('fitnessGoal').value;
     const time      = document.getElementById('availableTime').value;
+    const foodPref =document.getElementById('foodPrepered').value;
 
-    return `You are a certified fitness and nutrition coach. Create a detailed 7-day exercise timetable for a person with the following profile:
+    const foodRule = foodPref === 'Vegetarian'
+    ? `⚠️ STRICT RULE: This person is VEGETARIAN. You must NEVER suggest any meat, 
+       chicken, fish, seafood, or any non-vegetarian food item anywhere in this plan. 
+       All meals and diet tips must be 100% vegetarian.`
+    : foodPref === 'Vegan'
+    ? `⚠️ STRICT RULE: This person is VEGAN. You must NEVER suggest any animal products 
+       including meat, fish, dairy, eggs, or honey. All meals must be 100% plant-based.`
+    : foodPref === 'Eggetarian'
+    ? `⚠️ STRICT RULE: This person is EGGETARIAN. They eat eggs but NO meat, chicken, 
+       or seafood. Do not suggest any meat-based foods.`
+    : `This person has no food restrictions. You may suggest any food.`;
 
+  return `You are a certified fitness and nutrition coach.
+
+${foodRule}
+
+Create a detailed 7-day exercise timetable for a person with the following profile:
 - Obesity Level: ${obesity}
 - Diet Plan: ${diet}
+- Food Preference: ${foodPref}
 - Health Condition: ${condition}
 - Activity Level: ${activity}
 - Age Range: ${age}
@@ -86,14 +103,14 @@
 - Fitness Goal: ${goal}
 - Available Time Per Day: ${time}
 
-Structure the response as a full weekly timetable (Monday to Sunday). For each day include:
-1. Day name and focus area (e.g. "Monday – Cardio & Core")
+For each day (Monday to Sunday) include:
+1. Day name and focus area
 2. Warm-up (5–10 min)
-3. Main workout exercises with sets/reps or duration
+3. Main workout with sets/reps or duration
 4. Cool-down (5 min)
-5. Diet tip of the day aligned with their ${diet}${condition !== 'None' ? `, taking into account their ${condition}` : ''}
+5. Diet tip of the day — must strictly follow the ${foodPref} food preference
 
-Keep it practical, safe, and appropriate for the ${obesity} category. Use clear formatting with headers for each day.`;
+Use clear formatting with headers for each day.`;
   }
 
   /* ── generate ── */

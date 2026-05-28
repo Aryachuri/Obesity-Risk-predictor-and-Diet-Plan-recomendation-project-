@@ -3,41 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exercise Timetable — FitPlan AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Playfair+Display:wght@500;700&family=Manrope:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>FitPlan AI — Exercise Timetable Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="/static/css/exercise_timetable.css" rel="stylesheet">
 </head>
 <body>
 
-<!-- NAV — suite style -->
+<!-- NAV -->
 <nav>
-  <a class="nav-logo" href="/">
+  <a class="nav-logo" href="#">
     <div class="nav-logo-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-      </svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
     </div>
-    Fit<em>Plan</em> AI
+    FitPlan AI
   </a>
-  <div class="nav-right">
-    <span class="nav-badge">Ollama · Mistral 7B</span>
-    <a class="nav-back" href="/diet">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
-      Back to Diet Planner
-    </a>
-  </div>
+  <span class="nav-badge">Ollama · Mistral 7B</span>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-step-label">03 / 03 · Exercise Timetable</div>
     <div class="hero-eyebrow">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-      </svg>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       AI-Powered · Personalised · ML-Driven
     </div>
     <h1>Your <em>personalised</em><br>exercise timetable</h1>
@@ -55,18 +42,14 @@
 
   <!-- STEP 1: BMI & Obesity -->
   <div class="section-title">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-    </svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     Step 1 — Body Profile
   </div>
 
   <div class="card">
     <div class="card-header">
       <div class="card-icon green">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
       </div>
       <div class="card-header-text">
         <h3>BMI &amp; Obesity Level</h3>
@@ -74,6 +57,7 @@
       </div>
     </div>
     <div class="card-body">
+      <!-- BMI Input -->
       <div class="field" style="margin-bottom:16px;">
         <label>
           Enter Your BMI
@@ -83,12 +67,8 @@
           <input type="number" id="bmiInput" placeholder="e.g. 27.4" min="10" max="70" step="0.1"
             oninput="autoFillObesity(this.value); autoDetectDiet()">
           <div class="bmi-pill" id="bmiPill">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            Enter BMI
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Enter BMI above
           </div>
         </div>
       </div>
@@ -118,19 +98,14 @@
 
   <!-- STEP 2: Health & Diet -->
   <div class="section-title">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M9 11l3 3L22 4"/>
-      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-    </svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
     Step 2 — Health &amp; Diet
   </div>
 
   <div class="card">
     <div class="card-header">
       <div class="card-icon blue">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       </div>
       <div class="card-header-text">
         <h3>Health Condition &amp; Diet Plan</h3>
@@ -149,7 +124,7 @@
       </div>
 
       <div class="field">
-        <label>Diet Plan </label>
+        <label>Diet Plan <span class="ml-tag">ML output</span></label>
         <select id="dietPlan">
           <option value="">— Select —</option>
           <option value="Diabetic Diet">Diabetic Diet</option>
@@ -164,9 +139,7 @@
 
     <!-- OPTIONAL DETAILS -->
     <button class="collapse-toggle" id="collapseToggle" onclick="toggleCollapse()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       Additional details (optional)
     </button>
     <div class="collapse-body" id="collapseBody">
@@ -200,16 +173,6 @@
           </select>
         </div>
       </div>
-      <div class="field">
-          <label>Food Preference</label>
-          <select id="foodPrepered">
-            <option value="Vegeterian" selected>Vegeterian</option>
-            <option value="Non-Vegeterian">Non-Vegeterian</option>
-            <option value="Vegan">Vegan</option>
-            <option value="Eggiterian">Eggiterian</option>
-           
-          </select>
-        </div>
       <div class="field" style="margin-top:4px;">
         <label>Fitness Goal</label>
         <select id="fitnessGoal">
@@ -225,9 +188,7 @@
 
   <!-- GENERATE -->
   <button class="btn-generate" id="generateBtn" onclick="generateTimetable()">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-    </svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
     Generate My 7-Day Timetable
   </button>
 
@@ -243,10 +204,7 @@
   <!-- OUTPUT -->
   <div class="output-section" id="outputSection" style="margin-top:32px;">
     <div class="section-title">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Your Personalised Plan
     </div>
     <div class="output-card">
@@ -256,10 +214,7 @@
           <span id="planMeta"></span>
         </div>
         <button class="btn-copy" id="copyBtn" onclick="copyOutput()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2"/>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-          </svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           Copy
         </button>
       </div>
@@ -270,11 +225,7 @@
   <!-- FOOTER NOTE -->
   <div class="footer-note" style="margin-top:28px;">
     <div class="footer-icon">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
-      </svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     </div>
     <div>
       Calls your local Ollama at <code>http://localhost:11434</code> using <code>mistral:7b</code> with streaming.
@@ -284,6 +235,8 @@
 
 </div><!-- /main -->
 
-<script src="/static/js/exercise_timetable.js"></script>
+<script src="/static/js/exercise_timetable.js">
+ 
+</script>
 </body>
 </html>

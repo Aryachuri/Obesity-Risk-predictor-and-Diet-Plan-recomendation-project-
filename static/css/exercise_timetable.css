@@ -26,6 +26,71 @@
 
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
+   nav {
+    background: rgba(249,248,245,0.94) !important;
+    backdrop-filter: blur(12px);
+    height: 64px !important;
+    padding: 0 40px !important;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px;
+  }
+  .nav-logo em { font-style: italic; color: #3a7d5e; }
+  .nav-logo-icon {
+    width: 36px !important; height: 36px !important;
+    border-radius: 10px !important;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'Manrope', sans-serif;
+    transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--green); }
+
+  /* HERO — match suite hero height/font */
+  .hero { padding: 52px 32px 44px !important; }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: clamp(36px, 5vw, 54px) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.3px;
+  }
+  .hero-eyebrow {
+    /* reuse existing eyebrow, just nudge spacing */
+    margin-bottom: 18px !important;
+  }
+
+  /* Eyebrow label for step number */
+  .hero-step-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    font-family: 'Manrope', sans-serif;
+  }
   body {
     background: var(--bg);
     color: var(--text);
