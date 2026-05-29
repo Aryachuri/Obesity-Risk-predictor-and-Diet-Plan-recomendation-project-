@@ -38,7 +38,7 @@
     font-weight: 600 !important;
     letter-spacing: 0.3px;
   }
-  .nav-logo em { font-style: italic; color: #3a7d5e; }
+  .nav-logo em { font-style: italic; color:#3a7d5e; }
   .nav-logo-icon {
     width: 36px !important; height: 36px !important;
     border-radius: 10px !important;
@@ -125,7 +125,7 @@
   }
   .nav-logo-icon {
     width: 32px; height: 32px;
-    background: var(--green);
+    background: #000;
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
   }
