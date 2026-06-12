@@ -20,8 +20,10 @@
     const display = document.getElementById('bmi-display');
     const badge   = document.getElementById('bmi-badge');
 
-    if (w && h) {
-      const bmi = w / ((h / 100) ** 2);
+     if (w && h) {
+        const height_m = h * 0.3048;
+
+        const bmi = w / (height_m ** 2);
       const lbl = bmiLabel(bmi);
       const cfg = bmiCategories[lbl];
       display.textContent = bmi.toFixed(1);
@@ -61,7 +63,8 @@
       return;
     }
 
-    const bmi = parseFloat(weight) / ((parseFloat(height) / 100) ** 2);
+   const height_m = parseFloat(height) * 0.3048;
+   const bmi = parseFloat(weight) / (height_m ** 2);
 
     btn.disabled = true;
     btn.innerHTML = `<span class="spinner"></span> Predicting…`;
@@ -147,3 +150,6 @@
     document.write(html);
     document.close();
   }
+  document.addEventListener('DOMContentLoaded', function () {
+    updateBMI();
+});

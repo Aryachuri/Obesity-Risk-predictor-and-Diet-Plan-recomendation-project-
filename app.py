@@ -1,8 +1,12 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template,session
 import joblib, pandas as pd
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
+
+app.secret_key = "fitplan_secret_key"
 model = joblib.load('obesity_model.pkl')
 diet_model=joblib.load('diet_model.pkl')
 
@@ -21,13 +25,31 @@ def obesity():
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
-    age    = float(data['age'])
-    weight = float(data['weight'])
-    height = float(data['height']) / 100   # cm to m
-    gender = int(data['gender'])
-    bmi    = weight / (height ** 2)
 
-    user = pd.DataFrame([[age, weight, height*100, bmi, gender]],
+    age = float(data['age'])
+    weight = float(data['weight'])
+
+    # User enters feet
+    height_ft = float(data['height'])
+
+    # Convert to cm
+    height_cm = height_ft * 30.48
+
+    # Convert to meters for BMI
+    height_m = height_cm / 100
+
+    gender = int(data['gender'])
+
+    bmi = weight / (height_m ** 2)
+
+    # Store cm in session
+    session['age'] = age
+    session['weight'] = weight
+    session['height'] = height_ft
+    session['gender'] = gender
+
+
+    user = pd.DataFrame([[age, weight, height_cm, bmi, gender]],
                          columns=['Age','Weight','Height','BMI','Gender'])
 
     prediction    = model.predict(user)[0]
@@ -43,7 +65,17 @@ def predict():
 
 @app.route('/diet')
 def diet():
-    return render_template('diet_planner.html')
+     print("SESSION DATA:", dict(session))
+     age = session.get('age')
+     weight = session.get('weight')
+     height = session.get('height')
+     gender = session.get('gender')
+
+     return render_template('diet_planner.html',age=age,
+        weight=weight,
+        height=height,
+        gender=gender)
+    
 
 @app.route('/diet_plan', methods=['POST'])
 def diet_plan():
@@ -55,14 +87,10 @@ def diet_plan():
     # INPUTS
     # ======================================
 
-    age = float(data['age'])
-
-    weight = float(data['weight'])
-
-    height = float(data['height']) / 100
-
-    gender = int(data['gender'])
-
+    age = session.get('age') or float(data['age'])
+    weight = session.get('weight') or float(data['weight'])
+    height_ft = session.get('height') or float(data['height'])
+    gender = session.get('gender') if session.get('gender') is not None else int(data['gender'])
     activity_level = int(data['activity_level'])
 
     health_condition = int(data['health_condition'])
@@ -72,9 +100,17 @@ def diet_plan():
     # ======================================
     # BMI CALCULATION
     # ======================================
+    height_cm = height_ft * 30.48
 
-    bmi = weight / (height ** 2)
-
+    height_m = height_cm / 100
+ 
+    bmi = weight / (height_m ** 2)
+    print("SESSION:")
+    print("age =", age)
+    print("weight =", weight)
+    print("height_ft =", height_ft)
+    print("height_cm =", height_cm)
+    print("BMI =", bmi)
     # ======================================
     # CREATE INPUT ARRAY
     # ======================================
@@ -82,7 +118,7 @@ def diet_plan():
     input_data = np.array([[
         age,
         gender,
-        height * 100,
+        height_cm,
         weight,
         bmi,
         activity_level,
@@ -101,9 +137,10 @@ def diet_plan():
         prediction
     )
 
-    # ======================================
+   
+
     # RETURN RESPONSE
-    # ======================================
+  
 
     return jsonify({
 
@@ -125,10 +162,6 @@ def exercise_timetable():
         diet_plan     = data['diet_plan'],
         bmi           = data['bmi']
     )
-
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

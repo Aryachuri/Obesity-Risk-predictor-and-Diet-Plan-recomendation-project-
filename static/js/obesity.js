@@ -29,7 +29,10 @@
     const badge   = document.getElementById('bmi-badge');
 
     if (w && h) {
-      const bmi = w / ((h / 100) ** 2);
+        const height_m = h * 0.3048;
+
+        const bmi = w / (height_m ** 2);
+
       const lbl = bmiLabel(bmi);
       const cfg = bmiCategories[lbl];
       display.textContent = bmi.toFixed(1);
