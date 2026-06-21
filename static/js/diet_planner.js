@@ -58,10 +58,40 @@
 
     errorBox.className = 'error-box';
 
-    if (!age || !weight || !height || !calories) {
-      errorBox.className = 'error-box visible';
-      return;
-    }
+    // Convert input values to numbers
+const ageNum = parseInt(age);
+const weightNum = parseFloat(weight);
+const heightNum = parseFloat(height);
+
+// Validate Age
+if (ageNum < 18 || ageNum > 60) {
+  document.getElementById('error-area').innerHTML =
+    '<div class="error-msg">Age must be between 18 and 60 years. Please enter a valid age.</div>';
+  return;
+}
+
+// Validate Height
+
+
+if (heightNum < 4.8 || heightNum > 6.2) {
+    document.getElementById('error-area').innerHTML =
+        '<div class="error-msg">Height must be between 4.8 ft and 6.2 ft. Please enter a valid height.</div>';
+    return;
+}
+
+// Validate Weight
+if (weightNum < 45 || weightNum > 110) {
+  document.getElementById('error-area').innerHTML =
+    '<div class="error-msg">Weight must be between 45 kg and 110 kg. Please enter a valid weight.</div>';
+  return;
+}
+const caloriesNum = parseInt(calories);
+
+if (caloriesNum < 1000 || caloriesNum > 3500) {
+    document.getElementById("error-area").innerHTML =
+        '<div class="error-msg">Calories must be between 1000 and 3500 kcal. Please enter a valid value.</div>';
+    return;
+}
 
    const height_m = parseFloat(height) * 0.3048;
    const bmi = parseFloat(weight) / (height_m ** 2);

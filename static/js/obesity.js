@@ -56,11 +56,39 @@
     document.getElementById('error-area').innerHTML = '';
     document.getElementById('result-area').innerHTML = '';
 
-    if (!age || !weight || !height) {
-      document.getElementById('error-area').innerHTML =
-        '<div class="error-msg">Please fill in all fields before predicting.</div>';
-      return;
-    }
+   if (!age || !weight || !height) {
+  document.getElementById('error-area').innerHTML =
+    '<div class="error-msg">Please fill in all fields before predicting.</div>';
+  return;
+}
+
+// Convert input values to numbers
+const ageNum = parseInt(age);
+const weightNum = parseFloat(weight);
+const heightNum = parseFloat(height);
+
+// Validate Age
+if (ageNum < 18 || ageNum > 60) {
+  document.getElementById('error-area').innerHTML =
+    '<div class="error-msg">Age must be between 18 and 60 years. Please enter a valid age.</div>';
+  return;
+}
+
+// Validate Height
+
+
+if (heightNum < 4.8 || heightNum > 6.2) {
+    document.getElementById('error-area').innerHTML =
+        '<div class="error-msg">Height must be between 4.8 ft and 6.2 ft. Please enter a valid height.</div>';
+    return;
+}
+
+// Validate Weight
+if (weightNum < 45 || weightNum > 110) {
+  document.getElementById('error-area').innerHTML =
+    '<div class="error-msg">Weight must be between 45 kg and 110 kg. Please enter a valid weight.</div>';
+  return;
+}
 
     const btn = document.getElementById('predict-btn');
     btn.disabled = true;
