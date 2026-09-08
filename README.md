@@ -105,9 +105,6 @@ Example features:
 | `BMI`             | Body Mass Index             |
 | `Chronic_Disease` | Chronic disease information |
 | `Blood_Pressure`  | Blood pressure information  |
-| `Cholesterol`     | Cholesterol information     |
-| `Daily_Steps`     | Average daily steps         |
-| `Dietary_Habits`  | Dietary behavior            |
 | `Caloric_Intake`  | Daily caloric intake        |
 
 ---
